@@ -7,6 +7,7 @@
 void HelloCallback (IvyClientPtr app, void *data, int argc, char **argv){
 	const char* arg = (argc < 1) ? "" : argv[0];
 	fprintf(stderr,"%s\n",arg);
+	//test
 	IvySendMsg ("Bonjour%s", arg);
 }
 /* callback associated to "Bye" messages */
