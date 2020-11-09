@@ -7,14 +7,14 @@
 #include <ivyloop.h>
 #include <Ivy/timer.h>
 
-#define PERIODE 100
+#define PERIODE 10
 
 /*Variable globale associé a l'horloge*/
 int i = 0;
 
 /* fonction associe a l'emission de l'horloge */
 void HorlogeCallback(TimerId id, void *user_data, unsigned long delta) {
-	IvySendMsg ("Time = %d",i*PERIODE);
+	IvySendMsg ("Time = %d",i);
 	i++;
 }
 

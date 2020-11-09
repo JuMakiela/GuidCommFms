@@ -12,11 +12,26 @@ void CalculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
 	const char* arg = (argc < 1) ? "" : argv[0];
 	fprintf(stderr,"%s\n",arg);
 	sscanf(arg,"%d %d %d",time, XTK, TAE); // GS_XTK_TAE = time
-	roll_commande = 200;
+	//fonction de check time/donnee
+	roll_commande = 200; //Calcul de la commande de roulis
+	
 	strcat(retour, actual_time);
 	strcat(retour,roll_commande);
 	IvySendMsg ("%s", retour);
 }
+/* fonction associe a l'horloge */
+/*
+on verifie si le calculRoulis a eu lieu
+si oui
+on check si on doit envoyer notre info (100ms)
+si non 
+on envoi la commande précédente
+si 1s 
+on desarme le PA
+
+
+IMPORTANT définir avec le groupe seq la periode de l'horloge 10 ou 20 ms
+*/
 
 /* fonction associe a  */
 void stop (IvyClientPtr app, void *data, int argc, char **argv){
@@ -49,6 +64,8 @@ int main (int argc, char**argv){
 	IvyBindMsg (CalculRoulis, 0, "GS_XTK_TAE = (.*)");
 	/* abonnement */
 	IvyBindMsg (Stop, 0, "^Stop$");
+	/* abonnement */
+	//on s'abonne à l'holorge qui cadence nos envois
 	/* main loop */
 	IvyMainLoop();
 	return 0;
