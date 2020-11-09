@@ -3,25 +3,45 @@
 #include <getopt.h>
 #include <ivy.h>
 #include <ivyloop.h>
-/* callback associated to "Hello" messages */
+
+/* fonction associe a  */
 void HelloCallback (IvyClientPtr app, void *data, int argc, char **argv){
 	const char* arg = (argc < 1) ? "" : argv[0];
 	fprintf(stderr,"%s\n",arg);
-	//test
+	//scanf(
 	IvySendMsg ("Bonjour%s", arg);
 }
-/* callback associated to "Bye" messages */
+
+/* fonction associe a  */
 void ByeCallback (IvyClientPtr app, void *data, int argc, char **argv){
 	IvyStop ();
 }
+
 int main (int argc, char**argv){
 
-	/* initializations */
-	IvyInit ("IvyTranslater", "Hello le monde", 0, 0, 0, 0);
-	IvyStart ("10.3.141.120:2010");
-	/* binding of HelloCallback to messages starting with 'Hello' */
+	/* handling of -b option */
+	const char* bus = 0;
+	if( argc == 3){
+		
+		if(strcmp(argv[1], "-b") == 0){
+			bus = argv[2];
+		}
+		else{
+			printf("Definir un bus -b 127.127.127.127:2010\n");
+			exit(1);
+		}
+	}
+	else{
+		printf("Definir un bus -b 127.127.127.127:2010\n");
+		exit(1);
+	}
+
+	/* initialisation */
+	IvyInit ("Guid_COMM_APP", "Bonjour de Guid COMM", 0, 0, 0, 0);
+	IvyStart (bus);
+	/* abonnement  */
 	IvyBindMsg (HelloCallback, 0, "^Hello(.*)");
-	/* binding of ByeCallback to 'Bye' */
+	/* abonnement */
 	IvyBindMsg (ByeCallback, 0, "^Bye$");
 	/* main loop */
 	IvyMainLoop();
