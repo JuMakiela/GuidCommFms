@@ -5,15 +5,21 @@
 #include <ivyloop.h>
 
 /* fonction associe a  */
-void HelloCallback (IvyClientPtr app, void *data, int argc, char **argv){
+void CalculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
+	int time, XTK, TAE;
+	int roll_commande;
+	char retour[100] = "GC_CMD_ROLL =";
 	const char* arg = (argc < 1) ? "" : argv[0];
 	fprintf(stderr,"%s\n",arg);
-	//scanf(
-	IvySendMsg ("Bonjour%s", arg);
+	sscanf(arg,"%d %d %d",time, XTK, TAE); // GS_XTK_TAE = time
+	roll_commande = 200;
+	strcat(retour, actual_time);
+	strcat(retour,roll_commande);
+	IvySendMsg ("%s", retour);
 }
 
 /* fonction associe a  */
-void ByeCallback (IvyClientPtr app, void *data, int argc, char **argv){
+void stop (IvyClientPtr app, void *data, int argc, char **argv){
 	IvyStop ();
 }
 
@@ -40,9 +46,9 @@ int main (int argc, char**argv){
 	IvyInit ("Guid_COMM_APP", "Bonjour de Guid COMM", 0, 0, 0, 0);
 	IvyStart (bus);
 	/* abonnement  */
-	IvyBindMsg (HelloCallback, 0, "^Hello(.*)");
+	IvyBindMsg (CalculRoulis, 0, "GS_XTK_TAE = (.*)");
 	/* abonnement */
-	IvyBindMsg (ByeCallback, 0, "^Bye$");
+	IvyBindMsg (Stop, 0, "^Stop$");
 	/* main loop */
 	IvyMainLoop();
 	return 0;
