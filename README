@@ -9,9 +9,9 @@ Tu télécharges, sur le site, le paquet ivy
 
 https://www.eei.cena.fr/products/ivy/download/binaries.html#ubuntu
 
-Alors là, pour évité de te faire insulté car il te manque des lib tu vas installer tous ça:
+Alors là, pour éviter de te faire insulter car il te manque des lib tu vas installer tout ça:
 
-Normalement tous les distributions d’Ubuntu intègre gcc et g++ mais au cas oû:
+Normalement toutes les distributions d’Ubuntu intègrent gcc et g++ mais au cas oû:
 
 sudo apt update
 
@@ -29,7 +29,7 @@ sudo apt-get install tcl8.6-dev
 
 sudo apt-get install libglib2.0-dev
 
-Tu va dans /ivy-c_3.15.1/src et tu ouvres le Makefile. Tu faire un ctrl+f pour chercher tcl8.4. Tu commentes les deux lignes suivante :
+Tu vas dans /ivy-c_3.15.1/src et tu ouvres le Makefile. Tu fais un ctrl+f pour chercher tcl8.4. Tu commentes les deux lignes suivante :
 
 TCLINCL = -I/usr/include/tcl$(TCLVERS)
 
@@ -41,7 +41,7 @@ TCLINCL = -I/usr/include/tcl8.4
 
 TCLLIB = - ltcl8.4
 
-Puis tu remplaces le 4 par un 6, tu obtients
+Puis tu remplaces le 4 par un 6, tu obtiens
 
 #TCLINCL = -I/usr/include/tcl$(TCLVERS)
 
@@ -71,16 +71,16 @@ Ligne de code de compilation :
 
 gcc -o hello hellotranslater.c -I/home/florian/Téléchargements/ivy-c_3.15.1/src -L/home/florian/Téléchargements/ivy-c_3.15.1/src -livy -lpcre
 
-En remplacent, /home/florian/Téléchargements/ par ton emplacement de fichier Ivy que tu as installé au début
+En remplaçant, /home/florian/Téléchargements/ par ton emplacement de fichier Ivy que tu as installé au début
 
         Test
 
 Après tu fais un ./ hello
 
-Tu lance ivyprobe en ligne de commande:
+Tu lances ivyprobe en ligne de commande:
 
 ivyprobe -b 10.3.141.120:2010 ‘(.*)’
 
-Comme ça tu t’abonnes à tous les messages qui passe sur le bus, il faut que l’adresse soit la même que celle dans le fichier hellotranslater.c.
+Comme ça tu t’abonnes à tous les messages qui passent sur le bus, il faut que l’adresse soit la même que celle dans le fichier hellotranslater.c.
 
 Après si tu tapes un ‘Hello de florian’ par exemple sur l’ivyprobe, ‘de florian’ doit s’afficher dans la console de ton application. 
