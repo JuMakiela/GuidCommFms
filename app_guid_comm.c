@@ -4,20 +4,29 @@
 #include <ivy.h>
 #include <ivyloop.h>
 
+float roll_cmd;
+char cmd[100] = "GC_CMD_ROLL = INIT";
+bool active = True;
+
 /* fonction associe a  */
 void CalculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
-	int time, XTK, TAE;
+	int time;
+	float XTK, TAE, DTWPT;
 	int roll_commande;
 	char retour[100] = "GC_CMD_ROLL =";
 	const char* arg = (argc < 1) ? "" : argv[0];
 	fprintf(stderr,"%s\n",arg);
-	sscanf(arg,"%d %d %d",time, XTK, TAE); // GS_XTK_TAE = time
+	//GS_DATA Time="time" XTK="" TAE="" Dist_to_WPT=""
+	sscanf(arg,"GS_DATA Time=%d XTK=%d TAE=%d Dist_to_WPT=%d",time, XTK, TAE, DTWPT); // GS_XTK_TAE = time
 	//fonction de check time/donnee
 	roll_commande = 200; //Calcul de la commande de roulis
-	
-	strcat(retour, actual_time);
-	strcat(retour,roll_commande);
-	IvySendMsg ("%s", retour);
+	if(active){ //On transmet la commande si le PA est actif
+	    strcat(retour, actual_time);
+	    strcat(retour,roll_commande);
+	    IvySendMsg ("%s", retour);
+	    //roll_cmd = retour;
+	    //calcul = 0;
+	}
 }
 /* fonction associe a l'horloge */
 /*
@@ -28,7 +37,16 @@ si non
 on envoi la commande précédente
 si 1s 
 on desarme le PA
-
+void Sender(IvyClientPtr app, void *data, int argc, char **argv){
+    char retour[100] = "GC_CMD_ROLL =";
+    if(calcul < 100){
+        if(clocl%100=90){ //envoi tout les 100ms à 90ms
+	        IvySendMsg ("%s", roll_cmd);
+	        calcul++;
+        }
+    }
+    else{active = False;}
+}
 
 IMPORTANT définir avec le groupe seq la periode de l'horloge 10 ou 20 ms
 */
@@ -66,6 +84,7 @@ int main (int argc, char**argv){
 	IvyBindMsg (Stop, 0, "^Stop$");
 	/* abonnement */
 	//on s'abonne à l'holorge qui cadence nos envois
+	//IvyBindMsg (Clock, 0, "^
 	/* main loop */
 	IvyMainLoop();
 	return 0;
