@@ -9,7 +9,7 @@ char cmd[100] = "GC_CMD_ROLL = INIT";
 bool active = True;
 
 /* fonction associe a  */
-void CalculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
+void calculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
 	int time;
 	float XTK, TAE, DTWPT;
 	int roll_commande;
@@ -29,6 +29,10 @@ void CalculRoulis(IvyClientPtr app, void *data, int argc, char **argv){
 	}
 }
 /* fonction associe a l'horloge */
+
+void envoi(IvyClientPtr app, void *data, int argc, char **argv){
+
+}
 /*
 on verifie si le calculRoulis a eu lieu
 si oui
@@ -79,12 +83,12 @@ int main (int argc, char**argv){
 	IvyInit ("Guid_COMM_APP", "Bonjour de Guid COMM", 0, 0, 0, 0);
 	IvyStart (bus);
 	/* abonnement  */
-	IvyBindMsg (CalculRoulis, 0, "GS_XTK_TAE = (.*)");
+	IvyBindMsg (calculRoulis, 0, "GS_Data Time=(.*) XTK=(.*) TAE=(.*) Dist_to_WPT=(.*)"); //GS_Data Time="time" XTK=" " TAE=" " Dist_to_WPT=" "
 	/* abonnement */
-	IvyBindMsg (Stop, 0, "^Stop$");
+	IvyBindMsg (stop, 0, "^Stop$");
 	/* abonnement */
 	//on s'abonne à l'holorge qui cadence nos envois
-	//IvyBindMsg (Clock, 0, "^
+	IvyBindMsg (envoi, 0, "^Time=(.*)");
 	/* main loop */
 	IvyMainLoop();
 	return 0;
